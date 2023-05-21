@@ -1,0 +1,9 @@
+[29-Apr-2023 16:34:21 UTC] PHP Deprecated:  Implicit conversion from float -41.666666666666686 to int loses precision in /home/bapomhos/public_html/system/extensions/image.php on line 165
+[29-Apr-2023 16:34:21 UTC] PHP Deprecated:  Implicit conversion from float 333.33333333333337 to int loses precision in /home/bapomhos/public_html/system/extensions/image.php on line 165
+[29-Apr-2023 16:34:21 UTC] PHP Deprecated:  Implicit conversion from float -41.666666666666686 to int loses precision in /home/bapomhos/public_html/system/extensions/image.php on line 165
+[29-Apr-2023 16:34:21 UTC] PHP Deprecated:  Implicit conversion from float 333.33333333333337 to int loses precision in /home/bapomhos/public_html/system/extensions/image.php on line 165
+[30-Apr-2023 19:03:17 UTC] PHP Warning:  Module "redis" is already loaded in Unknown on line 0
+[30-Apr-2023 19:03:30 UTC] PHP Warning:  Module "redis" is already loaded in Unknown on line 0
+[30-Apr-2023 19:03:48 UTC] PHP Warning:  Module "redis" is already loaded in Unknown on line 0
+[30-Apr-2023 19:04:55 UTC] PHP Warning:  Module "redis" is already loaded in Unknown on line 0
+[30-Apr-2023 19:06:57 UTC] PHP Warning:  Module "redis" is already loaded in Unknown on line 0
