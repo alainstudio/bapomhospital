@@ -2,7 +2,7 @@
 // Core extension, https://github.com/annaesvensson/yellow-core
 
 class YellowCore {
-    const VERSION = "0.8.115";
+    const VERSION = "0.8.114";
     const RELEASE = "0.8.22";
     public $content;        // content files
     public $media;          // media files
@@ -10,8 +10,8 @@ class YellowCore {
     public $language;       // language settings
     public $user;           // user settings
     public $extension;      // extensions
-    public $lookup;         // lookup and normalisation methods
-    public $toolbox;        // toolbox with helper methods
+    public $lookup;         // lookup and normalisation
+    public $toolbox;        // toolbox with helper functions
     public $page;           // current page
 
     public function __construct() {
@@ -168,7 +168,7 @@ class YellowCore {
             $this->toolbox->log("error", "Can't parse file '$fileName'!");
             $this->toolbox->sendHttpHeader($this->toolbox->getHttpStatusFormatted(500));
             $troubleshooting = PHP_SAPI!="cli" ?
-                "<a href=\"".$this->toolbox->getTroubleshootingUrl()."\">See troubleshooting</a>." : "See ".$this->toolbox->getTroubleshootingUrl();
+                "<a href=\"".$this->getTroubleshootingUrl()."\">See troubleshooting</a>." : "See ".$this->getTroubleshootingUrl();
             echo "<br/>\nDatenstrom Yellow stopped with fatal error. Activate the debug mode for more information. $troubleshooting\n";
         }
     }
@@ -177,7 +177,7 @@ class YellowCore {
     public function exitFatalError($errorMessage = "") {
         $this->toolbox->sendHttpHeader($this->toolbox->getHttpStatusFormatted(500));
         $troubleshooting = PHP_SAPI!="cli" ?
-            "<a href=\"".$this->toolbox->getTroubleshootingUrl()."\">See troubleshooting</a>." : "See ".$this->toolbox->getTroubleshootingUrl();
+            "<a href=\"".$this->getTroubleshootingUrl()."\">See troubleshooting</a>." : "See ".$this->getTroubleshootingUrl();
         echo "$errorMessage $troubleshooting\n";
         exit(1);
     }
@@ -262,16 +262,11 @@ class YellowCore {
             }
         }
         if ($statusCode==0 && is_string_empty($command)) {
-            $lines = array();
-            foreach ($this->extension->data as $key=>$value) {
-                if (method_exists($value["object"], "onCommandHelp")) {
-                    $this->lookup->commandHandler = $key;
-                    $output = $value["object"]->onCommandHelp();
-                    $lines = array_merge($lines, is_array($output) ? $output : array($output));
-                }
+            $lineCounter = 0;
+            echo "Datenstrom Yellow is for people who make small websites. https://datenstrom.se/yellow/\n";
+            foreach ($this->getCommandHelp() as $line) {
+                echo(++$lineCounter>1 ? "        " : "Syntax: ")."php yellow.php $line\n";
             }
-            usort($lines, "strnatcasecmp");
-            $this->showCommandHelp($lines);
             $statusCode = 200;
         }
         if ($statusCode==0) {
@@ -284,15 +279,6 @@ class YellowCore {
             echo "YellowCore::command status:$statusCode time:$time ms<br/>\n";
         }
         return $statusCode<400 ? 0 : 1;
-    }
-    
-    // Show command help
-    public function showCommandHelp($lines) {
-        echo "Datenstrom Yellow is for people who make small websites. https://datenstrom.se/yellow/\n";
-        $lineCounter = 0;
-        foreach ($lines as $line) {
-            echo(++$lineCounter>1 ? "        " : "Syntax: ")."php yellow.php $line\n";
-        }
     }
     
     // Handle startup
@@ -323,6 +309,32 @@ class YellowCore {
     public function getLayoutArguments($sizeMin = 9) {
         return array_pad($this->lookup->layoutArguments, $sizeMin, null);
     }
+    
+    // Return command help
+    public function getCommandHelp() {
+        $data = array();
+        foreach ($this->extension->data as $key=>$value) {
+            if (method_exists($value["object"], "onCommandHelp")) {
+                $output = $value["object"]->onCommandHelp();
+                $lines = is_array($output) ? $output : array($output);
+                foreach ($lines as $line) {
+                    list($command, $dummy) = $this->toolbox->getTextList($line, " ", 2);
+                    if (!is_string_empty($command) && !isset($data[$command])) $data[$command] = $line;
+                }
+            }
+        }
+        uksort($data, "strnatcasecmp");
+        return $data;
+    }
+    
+    // Return troubleshooting URL
+    public function getTroubleshootingUrl() {
+        return "https://datenstrom.se/yellow/help/troubleshooting";
+    }
+    
+    // TODO: remove later, for backwards compatibility
+    public function log($action, $message) { $this->toolbox->log($action, $message); }
+    public function isCommandLine() { return $this->lookup->isCommandLine(); }
 }
 
 class YellowContent {
@@ -2584,11 +2596,6 @@ class YellowToolbox {
             $rawDataNew = $rawData;
         }
         return $rawDataNew;
-    }
-    
-    // Return troubleshooting URL
-    public function getTroubleshootingUrl() {
-        return "https://datenstrom.se/yellow/help/troubleshooting";
     }
 
     // Detect server URL

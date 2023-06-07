@@ -38,7 +38,8 @@ Umunneochi L.G.A Abia State, Nigeria.</p>
 * 234 806-665-3868 
 * 234 803-556-0823
 
-<div style="text-align: center;"><iframe class="uagb-google-map__iframe" title="Google Map for Isuochi Secondary School" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAsd_d46higiozY-zNqtr7zdA81Soswje4&amp;q=Isuochi%20Secondary%20School&amp;zoom=12&amp;language=en" width="640" height="300" loading="lazy"></iframe></div>
+<div style="text-align: center;"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d507914.46458439005!2d6.815480653443939!3d5.983480806598175!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x10431505a64dc8d9%3A0x6f38bac88fd08364!2sIsuochi%20Secondary%20School!5e0!3m2!1sen!2sca!4v1686141873376!5m2!1sen!2sca" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+
 
 
 <p style="text-align: center;">
